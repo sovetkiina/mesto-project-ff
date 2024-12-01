@@ -1,2 +1,5 @@
-node_modules
-dist
+# Игнорировать папку node_modules
+node_modules/
+
+# Игнорировать папку dist (или build, если используете её)
+dist/

@@ -11,11 +11,11 @@ export function handleFormSubmit(
 ) {
   evt.preventDefault();
 
-  // Обновляем данные профиля
+  // Обновление данных профиля
   profileTitle.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
 
-  // Закрываем попап
+  // Закрытие попапа
   closeModal(editPopup);
 }
 
@@ -36,7 +36,7 @@ export function handleAddCardFormSubmit(
   );
   const cardLinkInput = addCardForm.querySelector(".popup__input_type_url");
 
-  // Создаем новую карточку
+  // Создание новой карточки
   const newCardData = {
     name: cardNameInput.value,
     link: cardLinkInput.value,
@@ -46,7 +46,7 @@ export function handleAddCardFormSubmit(
 
   cardListContainer.prepend(newCard);
 
-  // Очищаем форму и закрываем попап
+  // Очистка формы и закрытие попапа
   addCardForm.reset();
   closeModal(addCardPopup);
 }

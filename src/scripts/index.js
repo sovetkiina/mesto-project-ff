@@ -82,7 +82,7 @@ addCardForm.addEventListener("submit", (evt) => {
   );
 });
 
-// Рендерим карточки
+// Рендеринг
 renderCards(initialCards, toggleLike, deleteCard, handleImageClick);
 
 // Функция для обработки клика по изображению карточки
@@ -96,6 +96,6 @@ function handleImageClick(cardImage) {
   popupImage.alt = cardImage.alt;
   popupCaption.textContent = cardImage.alt;
 
-  // Открываем попап с изображением
+  // Открытие попапа с изображением
   openModal(imagePopup);
 }
