@@ -3,8 +3,7 @@ import { initialCards } from "./cards.js";
 import {
   createCard,
   toggleLike,
-  deleteCard,
-  renderCards,
+  deleteCard
 } from "../components/card.js";
 import { openModal, closeModal } from "../components/modal.js";
 import {
@@ -19,9 +18,9 @@ const cardListContainer = document.querySelector(".places__list");
 const editPopup = document.querySelector(".popup_type_edit");
 const addCardPopup = document.querySelector(".popup_type_new-card");
 const imagePopup = document.querySelector(".popup_type_image");
-const formElement = document.querySelector('.popup__form[name="edit-profile"]');
-const nameInput = formElement.querySelector(".popup__input_type_name");
-const jobInput = formElement.querySelector(".popup__input_type_description");
+const editProfileForm = document.querySelector('.popup__form[name="edit-profile"]');
+const nameInput = editProfileForm.querySelector(".popup__input_type_name");
+const jobInput = editProfileForm.querySelector(".popup__input_type_description");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const addCardForm = document.querySelector('.popup__form[name="new-place"]');
@@ -45,20 +44,8 @@ document.querySelectorAll(".popup__close").forEach((button) => {
   });
 });
 
-// Слушатели событий для попапа изображения
-cardListContainer.addEventListener("click", (event) => {
-  if (event.target.classList.contains("card__image")) {
-    const popupImage = imagePopup.querySelector(".popup__image");
-    const popupCaption = imagePopup.querySelector(".popup__caption");
-    popupImage.src = event.target.src;
-    popupImage.alt = event.target.alt;
-    popupCaption.textContent = event.target.alt;
-    openModal(imagePopup);
-  }
-});
-
 // Обработчик отправки формы редактирования профиля
-formElement.addEventListener("submit", (evt) => {
+editProfileForm.addEventListener("submit", (evt) => {
   handleFormSubmit(
     evt,
     nameInput,
@@ -78,20 +65,18 @@ addCardForm.addEventListener("submit", (evt) => {
     createCard,
     deleteCard,
     handleImageClick,
-    addCardPopup
+    addCardPopup,
+    toggleLike
   );
 });
 
-// Рендеринг
-renderCards(initialCards, toggleLike, deleteCard, handleImageClick);
-
 // Функция для обработки клика по изображению карточки
-function handleImageClick(cardImage) {
+export function handleImageClick(cardImage) {
   const imagePopup = document.querySelector(".popup_type_image");
   const popupImage = imagePopup.querySelector(".popup__image");
   const popupCaption = imagePopup.querySelector(".popup__caption");
 
-  // Устанавливаем изображение в попап
+  // Установка изображения в попап
   popupImage.src = cardImage.src;
   popupImage.alt = cardImage.alt;
   popupCaption.textContent = cardImage.alt;
@@ -99,3 +84,14 @@ function handleImageClick(cardImage) {
   // Открытие попапа с изображением
   openModal(imagePopup);
 }
+
+// Рендеринг стартовых карточек из initialCards в index.js
+initialCards.forEach((cardData) => {
+  const cardElement = createCard(
+    cardData,
+    toggleLike,
+    deleteCard,
+    handleImageClick
+  );
+  cardListContainer.append(cardElement);
+});

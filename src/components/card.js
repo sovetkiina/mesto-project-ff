@@ -1,9 +1,10 @@
+import { handleImageClick } from "../scripts/index.js";
 // Функция для создания карточки
 export function createCard(
   cardData,
   likeCallback,
   deleteCallback,
-  imageClickCallback
+  handleImageClick
 ) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -23,7 +24,7 @@ export function createCard(
   deleteButton.addEventListener("click", () => deleteCallback(cardElement));
 
   // Обработчик клика по картинке
-  cardImage.addEventListener("click", () => imageClickCallback(cardImage));
+  cardImage.addEventListener("click", () => handleImageClick(cardImage));
 
   return cardElement;
 }
@@ -36,23 +37,4 @@ export function toggleLike(likeButton) {
 // Функция для удаления карточки
 export function deleteCard(cardElement) {
   cardElement.remove();
-}
-
-// Функция для рендеринга всех карточек
-export function renderCards(
-  cardArray,
-  likeCallback,
-  deleteCallback,
-  imageClickCallback
-) {
-  const cardListContainer = document.querySelector(".places__list");
-  cardArray.forEach((cardData) => {
-    const cardElement = createCard(
-      cardData,
-      likeCallback,
-      deleteCallback,
-      imageClickCallback
-    );
-    cardListContainer.append(cardElement);
-  });
 }

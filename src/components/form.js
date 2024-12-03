@@ -26,8 +26,9 @@ export function handleAddCardFormSubmit(
   cardListContainer,
   createCard,
   deleteCard,
-  imageClickCallback,
-  addCardPopup
+  handleImageClick,
+  addCardPopup,
+  likeCallback
 ) {
   evt.preventDefault();
 
@@ -42,7 +43,7 @@ export function handleAddCardFormSubmit(
     link: cardLinkInput.value,
   };
 
-  const newCard = createCard(newCardData, deleteCard, imageClickCallback);
+  const newCard = createCard(newCardData, likeCallback, deleteCard, handleImageClick);
 
   cardListContainer.prepend(newCard);
 
