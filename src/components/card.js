@@ -1,4 +1,4 @@
-import { handleImageClick } from "../scripts/index.js";
+
 // Функция для создания карточки
 export function createCard(
   cardData,

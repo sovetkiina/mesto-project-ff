@@ -1,22 +1,32 @@
 import { closeModal } from "./modal.js";
+import { updateUserData, addCard } from "./api.js";
 
 // Обработчик для формы редактирования профиля
 export function handleFormSubmit(
   evt,
   nameInput,
-  jobInput,
+  aboutInput,
   profileTitle,
   profileDescription,
   editPopup
 ) {
   evt.preventDefault();
 
-  // Обновление данных профиля
-  profileTitle.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
+  const updatedName = nameInput.value;
+  const updatedAbout = aboutInput.value;
+
+  updateUserData(updatedName, updatedAbout)
+    .then((updatedUserData) => {
+      // Обновляем данные на странице
+      profileTitle.textContent = updatedUserData.name;
+      profileDescription.textContent = updatedUserData.about;
 
   // Закрытие попапа
   closeModal(editPopup);
+})
+.catch((error) => {
+  console.error(error);
+});
 }
 
 // Обработчик для формы добавления новой карточки
@@ -32,22 +42,24 @@ export function handleAddCardFormSubmit(
 ) {
   evt.preventDefault();
 
-  const cardNameInput = addCardForm.querySelector(
-    ".popup__input_type_card-name"
-  );
+  const cardNameInput = addCardForm.querySelector(".popup__input_type_card-name");
   const cardLinkInput = addCardForm.querySelector(".popup__input_type_url");
 
-  // Создание новой карточки
   const newCardData = {
     name: cardNameInput.value,
     link: cardLinkInput.value,
   };
 
-  const newCard = createCard(newCardData, likeCallback, deleteCard, handleImageClick);
+  addCard(newCardData)
+  .then((newCard) => {
+    const cardElement = createCard(newCard);
 
-  cardListContainer.prepend(newCard);
+    cardListContainer.prepend(cardElement);
 
-  // Очистка формы и закрытие попапа
-  addCardForm.reset();
-  closeModal(addCardPopup);
+    addCardForm.reset();
+    closeModal(addCardPopup);
+  })
+  .catch((error) => {
+    console.error('Ошибка добавления карточки:', error);
+  });
 }

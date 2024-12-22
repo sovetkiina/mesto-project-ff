@@ -1,5 +1,4 @@
 import "../pages/index.css";
-import { initialCards } from "./cards.js";
 import {
   createCard,
   toggleLike,
@@ -10,6 +9,8 @@ import {
   handleFormSubmit,
   handleAddCardFormSubmit,
 } from "../components/form.js";
+import { enableValidation, clearValidation } from "../components/validation.js";
+import { getUserData, getCards } from "../components/api.js";
 
 // Инициализация элементов DOM
 const editButton = document.querySelector(".profile__edit-button");
@@ -23,11 +24,22 @@ const nameInput = editProfileForm.querySelector(".popup__input_type_name");
 const jobInput = editProfileForm.querySelector(".popup__input_type_description");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const profileAvatar = document.querySelector('.profile__image');
 const addCardForm = document.querySelector('.popup__form[name="new-place"]');
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+};
 
 // Открытие попапа добавления новой карточки
 addButton.addEventListener("click", () => {
   openModal(addCardPopup);
+  clearValidation(addCardForm, validationConfig);
 });
 
 // Открытие попапа редактирования профиля
@@ -35,6 +47,7 @@ editButton.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
   openModal(editPopup);
+  clearValidation(editProfileForm, validationConfig);
 });
 
 // Закрытие попапов
@@ -54,7 +67,9 @@ editProfileForm.addEventListener("submit", (evt) => {
     profileDescription,
     editPopup
   );
+  clearValidation(editProfileForm, validationConfig);
 });
+
 
 // Обработчик отправки формы добавления карточки
 addCardForm.addEventListener("submit", (evt) => {
@@ -68,6 +83,7 @@ addCardForm.addEventListener("submit", (evt) => {
     addCardPopup,
     toggleLike
   );
+  clearValidation(addCardForm, validationConfig);
 });
 
 // Функция для обработки клика по изображению карточки
@@ -85,13 +101,22 @@ export function handleImageClick(cardImage) {
   openModal(imagePopup);
 }
 
-// Рендеринг стартовых карточек из initialCards в index.js
-initialCards.forEach((cardData) => {
-  const cardElement = createCard(
-    cardData,
-    toggleLike,
-    deleteCard,
-    handleImageClick
-  );
-  cardListContainer.append(cardElement);
-});
+Promise.all([getUserData(), getCards()])
+  .then(([userData, cardsData]) => {
+    // Обновление данных профиля
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
+
+    // Отображаение карточек
+    cardsData.forEach((cardData) => {
+      const cardElement = createCard(cardData);
+      cardListContainer.append(cardElement);
+    });
+  })
+  .catch((error) => {
+    console.error('Ошибка загрузки данных:', error);
+  });
+
+// включение валидации вызовом enableValidation
+enableValidation(validationConfig);
