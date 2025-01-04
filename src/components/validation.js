@@ -1,3 +1,4 @@
+//модуль validation
 const form = document.querySelector(".popup__form");
 const formInput = form.querySelector(".popup__input");
 const formError = form.querySelector(`.${formInput.id}-error`);
@@ -18,8 +19,8 @@ const hideInputError = (formElement, inputElement) => {
   errorElement.textContent = "";
 };
 
-const  checkInputValidity = (formElement, inputElement) => {
-    if (inputElement.validity.patternMismatch) {
+const checkInputValidity = (formElement, inputElement) => {
+  if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
     inputElement.setCustomValidity("");
@@ -33,29 +34,22 @@ const  checkInputValidity = (formElement, inputElement) => {
 };
 
 const toggleButtonState = (inputList, buttonElement) => {
-  // Если есть хотя бы один невалидный инпут
   if (hasInvalidInput(inputList)) {
-    // сделай кнопку неактивной
     buttonElement.disabled = true;
     buttonElement.classList.add("popup__button_disabled");
   } else {
-    // иначе сделай кнопку активной
     buttonElement.disabled = false;
     buttonElement.classList.remove("popup__button_disabled");
   }
 };
 
 const hasInvalidInput = (inputList) => {
-    // проходим по этому массиву методом some
-    return inputList.some((inputElement) => {
-      // Если поле не валидно, колбэк вернёт true
-      // Обход массива прекратится и вся функция
-      // hasInvalidInput вернёт true
+  return inputList.some((inputElement) => {
   
-      return !inputElement.validity.valid;
-    });
-  };
-  
+  return !inputElement.validity.valid;
+  });
+};
+
 // Функция для добавления слушателей событий на поля формы
 const setEventListeners = (formElement) => {
   const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
@@ -69,7 +63,6 @@ const setEventListeners = (formElement) => {
   });
 };
 
-
 // Добавление обработчиков всем формам
 export const enableValidation = (formElement) => {
   const formList = Array.from(document.querySelectorAll(".popup__form"));
@@ -81,13 +74,13 @@ export const enableValidation = (formElement) => {
   });
 };
 
-
-// Функция для очистки ошибок валидации 
+// Функция для очистки ошибок валидации
 export const clearValidation = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
-    const buttonElement = formElement.querySelector(".popup__button");
-  
-    inputList.forEach((inputElement) => hideInputError(formElement, inputElement));
-    toggleButtonState(inputList, buttonElement);
-};
+  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
+  const buttonElement = formElement.querySelector(".popup__button");
 
+  inputList.forEach((inputElement) =>
+    hideInputError(formElement, inputElement)
+  );
+  toggleButtonState(inputList, buttonElement);
+};

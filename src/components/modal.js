@@ -1,5 +1,7 @@
+//модуль modal
+
 // Функция для открытия попапа
-export function openModal(popup) {
+function openModal(popup) {
   popup.classList.add("popup_is-opened");
   popup.classList.remove("popup_is-animated");
 
@@ -8,8 +10,23 @@ export function openModal(popup) {
   popup.addEventListener("click", handleOverlayClose);
 }
 
+// Функция для обработки клика по изображению карточки
+function handleImageClick(cardImage) {
+  const imagePopup = document.querySelector(".popup_type_image");
+  const popupImage = imagePopup.querySelector(".popup__image");
+  const popupCaption = imagePopup.querySelector(".popup__caption");
+
+  // Установка изображения в попап
+  popupImage.src = cardImage.src;
+  popupImage.alt = cardImage.alt;
+  popupCaption.textContent = cardImage.alt;
+
+  // Открытие попапа с изображением
+  openModal(imagePopup);
+}
+
 // Функция для закрытия попапа
-export function closeModal(popup) {
+function closeModal(popup) {
   popup.classList.remove("popup_is-opened");
   popup.classList.add("popup_is-animated");
 
@@ -34,3 +51,5 @@ function handleOverlayClose(evt) {
     closeModal(evt.currentTarget);
   }
 }
+
+export { openModal, handleImageClick, closeModal };

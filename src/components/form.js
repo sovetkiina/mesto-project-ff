@@ -1,5 +1,40 @@
+//модуль form
 import { closeModal } from "./modal.js";
-import { updateUserData, addCard } from "./api.js";
+import { updateUserData, addCard, updateAvatar } from "./api.js";
+
+// Обработчик для формы редактирования аватара
+export function handleAvatarFormSubmit(
+  evt,
+  avatarInput,
+  profileAvatar,
+  editPopupAvatar
+) {
+  evt.preventDefault();
+
+  const avatarLink = avatarInput.value;
+  const saveButton = evt.target.querySelector(".popup__button");
+  const originalButtonText = saveButton.textContent;
+
+  // Меняем текст кнопки на "Сохранение..."
+  saveButton.textContent = "Сохранение...";
+  saveButton.disabled = true; // Отключаем кнопку
+
+  // Отправляем запрос на обновление аватара
+  updateAvatar(avatarLink)
+    .then((updatedUserData) => {
+      profileAvatar.style.backgroundImage = `url(${updatedUserData.avatar})`;
+
+      closeModal(editPopupAvatar);
+    })
+    .catch((error) => {
+      console.error("Ошибка обновления аватара:", error);
+    })
+    .finally(() => {
+      // Восстанавливаем текст кнопки и активируем её после завершения операции
+      saveButton.textContent = originalButtonText;
+      saveButton.disabled = false;
+    });
+}
 
 // Обработчик для формы редактирования профиля
 export function handleFormSubmit(
@@ -14,6 +49,12 @@ export function handleFormSubmit(
 
   const updatedName = nameInput.value;
   const updatedAbout = aboutInput.value;
+  const saveButton = evt.target.querySelector(".popup__button"); // Кнопка отправки формы
+  const originalButtonText = saveButton.textContent; // Сохраняем исходный текст кнопки
+
+  // Меняем текст кнопки на "Сохранение..."
+  saveButton.textContent = "Сохранение...";
+  saveButton.disabled = true; // Отключаем кнопку
 
   updateUserData(updatedName, updatedAbout)
     .then((updatedUserData) => {
@@ -21,28 +62,35 @@ export function handleFormSubmit(
       profileTitle.textContent = updatedUserData.name;
       profileDescription.textContent = updatedUserData.about;
 
-  // Закрытие попапа
-  closeModal(editPopup);
-})
-.catch((error) => {
-  console.error(error);
-});
+      // Закрытие попапа
+      closeModal(editPopup);
+    })
+    .catch((error) => {
+      console.error("Ошибка редактирования профиля:", error);
+    })
+    .finally(() => {
+      // Восстанавливаем текст кнопки и активируем её после завершения операции
+      saveButton.textContent = originalButtonText;
+      saveButton.disabled = false;
+    });
 }
 
 // Обработчик для формы добавления новой карточки
 export function handleAddCardFormSubmit(
   evt,
   addCardForm,
-  cardListContainer,
-  createCard,
-  deleteCard,
-  handleImageClick,
-  addCardPopup,
-  likeCallback
+  // cardListContainer,
+  // createCard,
+  // deleteCard,
+  // handleImageClick,
+  addCardPopup // ,
+  // toggleLike
 ) {
   evt.preventDefault();
 
-  const cardNameInput = addCardForm.querySelector(".popup__input_type_card-name");
+  const cardNameInput = addCardForm.querySelector(
+    ".popup__input_type_card-name"
+  );
   const cardLinkInput = addCardForm.querySelector(".popup__input_type_url");
 
   const newCardData = {
@@ -50,16 +98,35 @@ export function handleAddCardFormSubmit(
     link: cardLinkInput.value,
   };
 
+  const saveButton = addCardForm.querySelector(".popup__button");
+  const originalButtonText = saveButton.textContent;
+
+  // Меняем текст кнопки на "Сохранение..."
+  saveButton.textContent = "Сохранение...";
+  saveButton.disabled = true; // Отключаем кнопку
+
   addCard(newCardData)
-  .then((newCard) => {
-    const cardElement = createCard(newCard);
+    .then((newCard) => {
+      const cardElement = createCard(
+        newCard,
+        toggleLike,
+        (cardElement, cardId) => deleteCard(cardElement, cardId),
+        handleImageClick,
+        currentUserId
+      );
+      //console.log(cardElement);
 
-    cardListContainer.prepend(cardElement);
+      cardListContainer.prepend(cardElement);
 
-    addCardForm.reset();
-    closeModal(addCardPopup);
-  })
-  .catch((error) => {
-    console.error('Ошибка добавления карточки:', error);
-  });
+      addCardForm.reset();
+      closeModal(addCardPopup);
+    })
+    .catch((error) => {
+      console.error("Ошибка добавления карточки:", error);
+    })
+    .finally(() => {
+      // Восстанавливаем текст кнопки и активируем её после завершения операции
+      saveButton.textContent = originalButtonText;
+      saveButton.disabled = false;
+    });
 }
