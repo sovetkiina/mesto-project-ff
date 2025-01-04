@@ -1,4 +1,3 @@
-//модуль form
 import { closeModal } from "./modal.js";
 import { updateUserData, addCard, updateAvatar } from "./api.js";
 
@@ -15,11 +14,11 @@ export function handleAvatarFormSubmit(
   const saveButton = evt.target.querySelector(".popup__button");
   const originalButtonText = saveButton.textContent;
 
-  // Меняем текст кнопки на "Сохранение..."
+  // изменение текста кнопки на "Сохранение..."
   saveButton.textContent = "Сохранение...";
-  saveButton.disabled = true; // Отключаем кнопку
+  saveButton.disabled = true; // Отключение кнопки
 
-  // Отправляем запрос на обновление аватара
+  // запрос на обновление аватара
   updateAvatar(avatarLink)
     .then((updatedUserData) => {
       profileAvatar.style.backgroundImage = `url(${updatedUserData.avatar})`;
@@ -30,7 +29,6 @@ export function handleAvatarFormSubmit(
       console.error("Ошибка обновления аватара:", error);
     })
     .finally(() => {
-      // Восстанавливаем текст кнопки и активируем её после завершения операции
       saveButton.textContent = originalButtonText;
       saveButton.disabled = false;
     });
@@ -49,8 +47,8 @@ export function handleFormSubmit(
 
   const updatedName = nameInput.value;
   const updatedAbout = aboutInput.value;
-  const saveButton = evt.target.querySelector(".popup__button"); // Кнопка отправки формы
-  const originalButtonText = saveButton.textContent; // Сохраняем исходный текст кнопки
+  const saveButton = evt.target.querySelector(".popup__button");
+  const originalButtonText = saveButton.textContent;
 
   // Меняем текст кнопки на "Сохранение..."
   saveButton.textContent = "Сохранение...";
@@ -69,7 +67,6 @@ export function handleFormSubmit(
       console.error("Ошибка редактирования профиля:", error);
     })
     .finally(() => {
-      // Восстанавливаем текст кнопки и активируем её после завершения операции
       saveButton.textContent = originalButtonText;
       saveButton.disabled = false;
     });
@@ -79,12 +76,13 @@ export function handleFormSubmit(
 export function handleAddCardFormSubmit(
   evt,
   addCardForm,
-  // cardListContainer,
-  // createCard,
-  // deleteCard,
-  // handleImageClick,
-  addCardPopup // ,
-  // toggleLike
+  cardListContainer,
+  createCard,
+  deleteCard,
+  handleImageClick,
+  addCardPopup,
+  toggleLike,
+  currentUserId
 ) {
   evt.preventDefault();
 
@@ -114,11 +112,11 @@ export function handleAddCardFormSubmit(
         handleImageClick,
         currentUserId
       );
-      //console.log(cardElement);
 
       cardListContainer.prepend(cardElement);
 
       addCardForm.reset();
+
       closeModal(addCardPopup);
     })
     .catch((error) => {

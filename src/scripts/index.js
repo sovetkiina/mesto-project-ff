@@ -133,13 +133,13 @@ addCardForm.addEventListener("submit", (evt) => {
   handleAddCardFormSubmit(
     evt,
     addCardForm,
-    // cardListContainer,
-    // createCard,
-    // deleteCard,
-    // handleImageClick,
-    addCardPopup // ,
-    // toggleLike,
-    // currentUserId
+    cardListContainer,
+    createCard,
+    deleteCard,
+    handleImageClick,
+    addCardPopup,
+    toggleLike,
+    currentUserId
   );
   clearValidation(addCardForm, validationConfig);
 });

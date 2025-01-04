@@ -1,8 +1,6 @@
-//модуль card
 import {
   toggleCardLike,
   removeLike,
-  getCurrentUser,
   deleteCardFromServer,
 } from "./api.js";
 
@@ -29,8 +27,15 @@ export function createCard(
 
   // Обработчик лайка
   const likeButton = cardElement.querySelector(".card__like-button");
+
+  if (cardData.likes.some(like => like._id === currentUserId)) {
+    likeButton.classList.add("card__like-button_is-active");
+  } else {
+    likeButton.classList.remove("card__like-button_is-active");
+  }
+
   likeButton.addEventListener("click", () => {
-    likeCallback(likeButton, cardData._id, likesCount); // передаем id карточки и элемент для лайков
+    likeCallback(likeButton, cardData._id, likesCount );
   });
 
   // Обработчик удаления карточки
@@ -53,7 +58,6 @@ export function createCard(
 
 // Функция для переключения состояния лайка
 export function toggleLike(likeButton, cardId, likesCountElement) {
-  // Проверяем, лайкнут ли элемент (есть ли класс "card__like-button_is-active")
   const isLiked = likeButton.classList.contains("card__like-button_is-active");
 
   // Сохраняем текущее количество лайков
@@ -64,7 +68,7 @@ export function toggleLike(likeButton, cardId, likesCountElement) {
     removeLike(cardId)
       .then((updatedCardData) => {
         likesCountElement.textContent = updatedCardData.likes.length;
-        likeButton.classList.remove("card__like-button_is-active"); // Убираем активный класс
+        likeButton.classList.remove("card__like-button_is-active");
       })
       .catch((error) => {
         console.error(error);
@@ -75,7 +79,7 @@ export function toggleLike(likeButton, cardId, likesCountElement) {
     toggleCardLike(cardId)
       .then((updatedCardData) => {
         likesCountElement.textContent = updatedCardData.likes.length;
-        likeButton.classList.add("card__like-button_is-active"); // Добавляем активный класс
+        likeButton.classList.add("card__like-button_is-active");
       })
       .catch((error) => {
         console.error(error);
@@ -88,7 +92,6 @@ export function deleteCard(cardElement, cardId) {
   // Отправка запроса на удаление карточки с сервера
   deleteCardFromServer(cardId)
     .then(() => {
-      // Если карточка успешно удалена с сервера, удаляем её из DOM
       cardElement.remove();
     })
     .catch((error) => {

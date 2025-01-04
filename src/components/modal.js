@@ -1,5 +1,3 @@
-//модуль modal
-
 // Функция для открытия попапа
 function openModal(popup) {
   popup.classList.add("popup_is-opened");

@@ -1,7 +1,5 @@
-// api.js
 const cohortId = "wff-cohort-29";
 const token = "3644d081-7a40-44ea-9826-6f47b46cc342";
-
 const apiUrl = `https://nomoreparties.co/v1/${cohortId}/`;
 
 //запрос на получение информации о  пользователе
@@ -120,29 +118,6 @@ function removeLike(cardId) {
   });
 }
 
-// Функция для получения данных о текущем пользователе
-function getCurrentUser() {
-  return fetch(apiUrl, {
-    method: "GET",
-    headers: {
-      authorization: `Bearer ${token}`, // Передаем токен для авторизации
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Не удалось получить данные о пользователе");
-      }
-      return response.json(); // Получаем данные в формате JSON
-    })
-    .then((data) => {
-      console.log("Данные о текущем пользователе:", data);
-      return data; // Возвращаем данные о пользователе
-    })
-    .catch((error) => {
-      console.error("Ошибка при получении данных:", error);
-    });
-}
-
 // Функция для удаления карточки с сервера
 function deleteCardFromServer(cardId) {
   return fetch(`${apiUrl}cards/${cardId}`, {
@@ -172,6 +147,5 @@ export {
   toggleCardLike,
   removeLike,
   updateAvatar,
-  getCurrentUser,
   deleteCardFromServer,
 };
