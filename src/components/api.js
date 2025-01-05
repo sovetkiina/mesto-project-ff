@@ -2,6 +2,14 @@ const cohortId = "wff-cohort-29";
 const token = "3644d081-7a40-44ea-9826-6f47b46cc342";
 const apiUrl = `https://nomoreparties.co/v1/${cohortId}/`;
 
+//функция для проверки ответа
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 //запрос на получение информации о  пользователе
 function getUserData() {
   return fetch(`${apiUrl}users/me`, {
@@ -9,12 +17,7 @@ function getUserData() {
     headers: {
       authorization: token,
     },
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 //зарос на получение карточек
@@ -24,12 +27,7 @@ function getCards() {
     headers: {
       authorization: token,
     },
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 //Запрос на обновление аватара пользователя
@@ -43,12 +41,7 @@ function updateAvatar(avatarLink) {
     body: JSON.stringify({
       avatar: avatarLink,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject("Ошибка при обновлении аватара");
-  });
+  }).then(checkResponse);
 }
 
 // Запрос на обновление данных пользователя
@@ -63,12 +56,7 @@ function updateUserData(name, about) {
       name: name,
       about: about,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject("Ошибка при обновлении данных пользователя");
-  });
+  }).then(checkResponse);
 }
 
 //запрос на добавление новой карточки
@@ -80,12 +68,7 @@ function addCard(cardData) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(cardData),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 // Запрос на постановку лайка на карточке
@@ -95,12 +78,7 @@ function toggleCardLike(cardId) {
     headers: {
       authorization: token,
     },
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 // Запрос на удаление лайка
@@ -110,12 +88,7 @@ function removeLike(cardId) {
     headers: {
       authorization: token,
     },
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 // Функция для удаления карточки с сервера
@@ -125,18 +98,7 @@ function deleteCardFromServer(cardId) {
     headers: {
       authorization: token,
     },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        console.log("Статус ответа:", res.status); // Добавьте это для отладки
-        return Promise.reject("Ошибка при удалении карточки");
-      }
-      return res.json();
-    })
-    .catch((error) => {
-      console.error(error);
-      alert("Ошибка при удалении карточки с сервера");
-    });
+  }).then(checkResponse);
 }
 
 export {

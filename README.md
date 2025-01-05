@@ -1,2 +1,2 @@
 # Проектная работа Mesto
-https://github.com/sovetkiina/mesto-project-ff.git
+https://sovetkiina.github.io/mesto-project-ff
