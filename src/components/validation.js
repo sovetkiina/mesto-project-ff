@@ -22,7 +22,12 @@ const checkInputValidity = (formElement, inputElement, config) => {
   }
 
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage, config);
+    showInputError(
+      formElement,
+      inputElement,
+      inputElement.validationMessage,
+      config
+    );
   } else {
     hideInputError(formElement, inputElement, config);
   }
@@ -40,14 +45,15 @@ const toggleButtonState = (inputList, buttonElement, config) => {
 
 const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {
-  
-  return !inputElement.validity.valid;
+    return !inputElement.validity.valid;
   });
 };
 
 // Функция для добавления слушателей событий на поля формы
 const setEventListeners = (formElement, config) => {
-  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const inputList = Array.from(
+    formElement.querySelectorAll(config.inputSelector)
+  );
   const buttonElement = formElement.querySelector(config.submitButtonSelector);
   toggleButtonState(inputList, buttonElement, config);
 
@@ -73,7 +79,9 @@ export const enableValidation = (config) => {
 
 // Функция для очистки ошибок валидации
 export const clearValidation = (formElement, config) => {
-  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const inputList = Array.from(
+    formElement.querySelectorAll(config.inputSelector)
+  );
   const buttonElement = formElement.querySelector(config.submitButtonSelector);
 
   inputList.forEach((inputElement) =>

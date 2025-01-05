@@ -1,8 +1,4 @@
-import {
-  toggleCardLike,
-  removeLike,
-  deleteCardFromServer,
-} from "./api.js";
+import { toggleCardLike, removeLike, deleteCardFromServer } from "./api.js";
 
 // Функция для создания карточки
 export function createCard(
@@ -28,14 +24,14 @@ export function createCard(
   // Обработчик лайка
   const likeButton = cardElement.querySelector(".card__like-button");
 
-  if (cardData.likes.some(like => like._id === currentUserId)) {
+  if (cardData.likes.some((like) => like._id === currentUserId)) {
     likeButton.classList.add("card__like-button_is-active");
   } else {
     likeButton.classList.remove("card__like-button_is-active");
   }
 
   likeButton.addEventListener("click", () => {
-    likeCallback(likeButton, cardData._id, likesCount );
+    likeCallback(likeButton, cardData._id, likesCount);
   });
 
   // Обработчик удаления карточки

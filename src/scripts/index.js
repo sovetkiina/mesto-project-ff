@@ -1,16 +1,14 @@
 import "../pages/index.css";
 import { createCard, toggleLike, deleteCard } from "../components/card.js";
-import {
-  openModal,
-  closeModal
-} from "../components/modal.js";
-/*import {
-  handleFormSubmit,
-  handleAddCardFormSubmit,
-  handleAvatarFormSubmit,
-} from "../components/form.js";*/
+import { openModal, closeModal } from "../components/modal.js";
 import { enableValidation, clearValidation } from "../components/validation.js";
-import { getUserData, getCards, updateUserData, addCard, updateAvatar } from "../components/api.js";
+import {
+  getUserData,
+  getCards,
+  updateUserData,
+  addCard,
+  updateAvatar,
+} from "../components/api.js";
 
 // Инициализация элементов DOM
 const editButton = document.querySelector(".profile__edit-button");
@@ -51,14 +49,14 @@ const validationConfig = {
 };
 
 function handleImageClick(cardImage) {
-// Установка изображения в попап
+  // Установка изображения в попап
   popupImage.src = cardImage.src;
   popupImage.alt = cardImage.alt;
   popupCaption.textContent = cardImage.alt;
 
   // Открытие попапа с изображением
   openModal(imagePopup);
-} 
+}
 
 // Обработчик для формы редактирования аватара
 export function handleAvatarFormSubmit(
